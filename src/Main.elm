@@ -51,8 +51,6 @@ update msg model =
         SetWorkTime minutes ->
             ( { model
                 | workTime = minutes
-                , currentTime = minutes * 60 * 1000
-                , phase = WorkTime
                 , isRunning = False
               }
             , Cmd.none
@@ -61,8 +59,6 @@ update msg model =
         SetBreakTime minutes ->
             ( { model
                 | breakTime = minutes
-                , currentTime = minutes * 60 * 1000
-                , phase = BreakTime
                 , isRunning = False
               }
             , Cmd.none
