@@ -1,0 +1,271 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 2rem;
+}
+
+.settings {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.setting-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 200px;
+}
+
+.setting-group label {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    color: #666;
+}
+
+.setting-group input {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1.2rem;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.timer-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.timer-container {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 1rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.timer-circle {
+    width: 120px;
+    height: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #333;
+    min-width: 120px;
+    text-align: center;
+    font-family: monospace;
+}
+
+.timer-icon {
+    width: 100px;
+    height: 100px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.timer-icon.work {
+    background-image: url('https://cdn-icons-png.flaticon.com/512/8933/8933275.png');
+}
+
+.timer-icon.break {
+    background-image: url('https://cdn-icons-png.flaticon.com/512/5463/5463470.png');
+}
+
+.timer-text {
+    position: relative;
+    z-index: 1;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+}
+
+.timer {
+    font-size: 4rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.timer-label {
+    color: #666;
+    margin-bottom: 1.5rem;
+}
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.control-button {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    min-width: 100px;
+}
+
+.control-button:first-child {
+    background-color: #007bff;
+    color: white;
+}
+
+.control-button:first-child:hover {
+    background-color: #0056b3;
+}
+
+.control-button:last-child {
+    background-color: #6c757d;
+    color: white;
+}
+
+.control-button:last-child:hover {
+    background-color: #545b62;
+}
+
+.keyboard-hints {
+    text-align: center;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.timer-section {
+    padding: 1rem;
+    border: 1px solid #eee;
+    border-radius: 0.5rem;
+}
+
+.timer-section h2 {
+    margin: 0 0 1rem 0;
+    color: #666;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.timer.paused {
+    color: #666;
+}
+
+.timer.running {
+    color: #2ecc71;
+}
+
+input {
+    font-size: 1.2rem;
+    padding: 0.5rem;
+    width: 100px;
+    text-align: center;
+    border: 2px solid #ddd;
+    border-radius: 0.5rem;
+    margin: 1rem 0;
+}
+
+button {
+    font-size: 1.1rem;
+    padding: 0.7rem 1.5rem;
+    margin: 0.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: #3498db;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    min-width: 120px;
+    box-sizing: border-box;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+.controls {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+}
+
+.active-timer {
+    margin: 1rem 0;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.button-group {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.control-button {
+    font-size: 1.1rem;
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: #3498db;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    min-width: 120px;
+    box-sizing: border-box;
+}
+
+.control-button:hover {
+    background-color: #2980b9;
+}
+
+.control-button:active {
+    transform: scale(0.98);
+} 

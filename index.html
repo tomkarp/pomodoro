@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Pomodoro Timer</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div id="elm"></div>
+    <script src="elm.js"></script>
+    <script>
+      var app = Elm.Main.init({
+        node: document.getElementById('elm')
+      });
+
+      app.ports.playSound.subscribe(function() {
+        const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/270/270-preview.mp3');
+        audio.volume = 0.8;
+        audio.play().catch(error => console.error('Fehler beim Abspielen des Sounds:', error));
+      });
+    </script>
+  </body>
+</html>
