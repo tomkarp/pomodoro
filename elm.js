@@ -5247,7 +5247,7 @@ var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Main$init = function (_v0) {
 	return _Utils_Tuple2(
-		{breakTime: 5, currentTime: 0, isRunning: false, phase: $author$project$Main$WorkTime, workTime: 20},
+		{breakTime: 5, currentTime: (20 * 60) * 1000, isRunning: false, phase: $author$project$Main$WorkTime, workTime: 20},
 		$elm$core$Platform$Cmd$none);
 };
 var $author$project$Main$NoOp = {$: 'NoOp'};
