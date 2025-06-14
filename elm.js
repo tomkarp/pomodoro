@@ -5917,14 +5917,22 @@ var $author$project$Main$update = F2(
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{isRunning: false, workTime: minutes}),
+						{
+							currentTime: (_Utils_eq(model.phase, $author$project$Main$WorkTime) && _Utils_eq(model.currentTime, (model.workTime * 60) * 1000)) ? ((minutes * 60) * 1000) : model.currentTime,
+							isRunning: false,
+							workTime: minutes
+						}),
 					$elm$core$Platform$Cmd$none);
 			case 'SetBreakTime':
 				var minutes = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{breakTime: minutes, isRunning: false}),
+						{
+							breakTime: minutes,
+							currentTime: (_Utils_eq(model.phase, $author$project$Main$BreakTime) && _Utils_eq(model.currentTime, (model.breakTime * 60) * 1000)) ? ((minutes * 60) * 1000) : model.currentTime,
+							isRunning: false
+						}),
 					$elm$core$Platform$Cmd$none);
 			case 'StartTimer':
 				return _Utils_Tuple2(
