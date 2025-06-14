@@ -29,6 +29,7 @@ type Msg
     | StartTimer
     | PauseTimer
     | ResetTimer
+    | TogglePhase
     | Tick
     | NoOp
 
@@ -37,9 +38,9 @@ init : () -> ( Model, Cmd Msg )
 init _ =
     ( { workTime = 20
       , breakTime = 5
-      , currentTime = 0
-      , phase = WorkTime
+      , currentTime = 20 * 60 * 1000
       , isRunning = False
+      , phase = WorkTime
       }
     , Cmd.none
     )
@@ -51,7 +52,12 @@ update msg model =
         SetWorkTime minutes ->
             ( { model
                 | workTime = minutes
-                , isRunning = False
+                , currentTime =
+                    if model.phase == WorkTime && model.currentTime == model.workTime * 60 * 1000 then
+                        minutes * 60 * 1000
+
+                    else
+                        model.currentTime
               }
             , Cmd.none
             )
@@ -59,7 +65,12 @@ update msg model =
         SetBreakTime minutes ->
             ( { model
                 | breakTime = minutes
-                , isRunning = False
+                , currentTime =
+                    if model.phase == BreakTime && model.currentTime == model.breakTime * 60 * 1000 then
+                        minutes * 60 * 1000
+
+                    else
+                        model.currentTime
               }
             , Cmd.none
             )
@@ -82,6 +93,27 @@ update msg model =
               }
             , Cmd.none
             )
+
+        TogglePhase ->
+            if not model.isRunning then
+                let
+                    ( newPhase, newTime ) =
+                        case model.phase of
+                            WorkTime ->
+                                ( BreakTime, model.breakTime * 60 * 1000 )
+
+                            BreakTime ->
+                                ( WorkTime, model.workTime * 60 * 1000 )
+                in
+                ( { model
+                    | phase = newPhase
+                    , currentTime = newTime
+                  }
+                , Cmd.none
+                )
+
+            else
+                ( model, Cmd.none )
 
         Tick ->
             if model.isRunning then
@@ -164,6 +196,7 @@ view model =
                                         "break"
                                )
                         )
+                    , onClick TogglePhase
                     ]
                     []
                 ]

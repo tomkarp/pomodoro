@@ -5919,7 +5919,6 @@ var $author$project$Main$update = F2(
 						model,
 						{
 							currentTime: (_Utils_eq(model.phase, $author$project$Main$WorkTime) && _Utils_eq(model.currentTime, (model.workTime * 60) * 1000)) ? ((minutes * 60) * 1000) : model.currentTime,
-							isRunning: false,
 							workTime: minutes
 						}),
 					$elm$core$Platform$Cmd$none);
@@ -5930,8 +5929,7 @@ var $author$project$Main$update = F2(
 						model,
 						{
 							breakTime: minutes,
-							currentTime: (_Utils_eq(model.phase, $author$project$Main$BreakTime) && _Utils_eq(model.currentTime, (model.breakTime * 60) * 1000)) ? ((minutes * 60) * 1000) : model.currentTime,
-							isRunning: false
+							currentTime: (_Utils_eq(model.phase, $author$project$Main$BreakTime) && _Utils_eq(model.currentTime, (model.breakTime * 60) * 1000)) ? ((minutes * 60) * 1000) : model.currentTime
 						}),
 					$elm$core$Platform$Cmd$none);
 			case 'StartTimer':

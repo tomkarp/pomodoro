@@ -89,14 +89,24 @@ h1 {
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
+    cursor: pointer;
+    transition: transform 0.2s;
 }
 
 .timer-icon.work {
-    background-image: url('https://cdn-icons-png.flaticon.com/512/8933/8933275.png');
+    background-image: url('img/workTime.jpg');
 }
 
 .timer-icon.break {
-    background-image: url('https://cdn-icons-png.flaticon.com/512/5463/5463470.png');
+    background-image: url('img/breakTime.jpg');
+}
+
+.timer-icon:hover {
+    transform: scale(1.1);
+}
+
+.timer-icon:active {
+    transform: scale(0.98);
 }
 
 .timer-text {
@@ -268,4 +278,20 @@ button:active {
 
 .control-button:active {
     transform: scale(0.98);
+}
+
+.attribution {
+    margin-top: 2rem;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.attribution a {
+    color: #4a90e2;
+    text-decoration: none;
+}
+
+.attribution a:hover {
+    text-decoration: underline;
 } 

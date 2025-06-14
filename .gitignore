@@ -1,6 +1,18 @@
 # Elm
 elm-stuff/
-elm.js
+*.elmi
+*.elmo
+
+# Node
+node_modules/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
 
 # OS generated files
 .DS_Store
@@ -8,11 +20,4 @@ elm.js
 ._*
 .Spotlight-V100
 .Trashes
-ehthumbs.db
-Thumbs.db
-
-# Editor directories and files
-.idea/
-.vscode/
-*.swp
-*.swo 
+ehthumbs.db 
