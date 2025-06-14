@@ -35,8 +35,8 @@ type Msg
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( { workTime = 5
-      , breakTime = 3
+    ( { workTime = 20
+      , breakTime = 5
       , currentTime = 0
       , phase = WorkTime
       , isRunning = False
@@ -48,20 +48,20 @@ init _ =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        SetWorkTime seconds ->
+        SetWorkTime minutes ->
             ( { model
-                | workTime = seconds
-                , currentTime = seconds * 1000
+                | workTime = minutes
+                , currentTime = minutes * 60 * 1000
                 , phase = WorkTime
                 , isRunning = False
               }
             , Cmd.none
             )
 
-        SetBreakTime seconds ->
+        SetBreakTime minutes ->
             ( { model
-                | breakTime = seconds
-                , currentTime = seconds * 1000
+                | breakTime = minutes
+                , currentTime = minutes * 60 * 1000
                 , phase = BreakTime
                 , isRunning = False
               }
@@ -69,16 +69,7 @@ update msg model =
             )
 
         StartTimer ->
-            ( { model
-                | isRunning = True
-                , currentTime =
-                    case model.phase of
-                        WorkTime ->
-                            model.workTime * 1000
-
-                        BreakTime ->
-                            model.breakTime * 1000
-              }
+            ( { model | isRunning = True }
             , Cmd.none
             )
 
@@ -91,7 +82,7 @@ update msg model =
             ( { model
                 | isRunning = False
                 , phase = WorkTime
-                , currentTime = model.workTime * 1000
+                , currentTime = model.workTime * 60 * 1000
               }
             , Cmd.none
             )
@@ -106,7 +97,7 @@ update msg model =
                     case model.phase of
                         WorkTime ->
                             ( { model
-                                | currentTime = model.breakTime * 1000
+                                | currentTime = model.breakTime * 60 * 1000
                                 , phase = BreakTime
                                 , isRunning = False
                               }
@@ -115,7 +106,7 @@ update msg model =
 
                         BreakTime ->
                             ( { model
-                                | currentTime = model.workTime * 1000
+                                | currentTime = model.workTime * 60 * 1000
                                 , phase = WorkTime
                                 , isRunning = False
                               }
@@ -140,7 +131,7 @@ view model =
         [ h1 [] [ text "Pomodoro Timer" ]
         , div [ Attr.class "settings" ]
             [ div [ Attr.class "setting-group" ]
-                [ label [] [ text "Arbeitszeit (Sekunden):" ]
+                [ label [] [ text "Arbeitszeit (Minuten):" ]
                 , input
                     [ Attr.type_ "number"
                     , Attr.value (String.fromInt model.workTime)
@@ -151,7 +142,7 @@ view model =
                     []
                 ]
             , div [ Attr.class "setting-group" ]
-                [ label [] [ text "Pausenzeit (Sekunden):" ]
+                [ label [] [ text "Pausenzeit (Minuten):" ]
                 , input
                     [ Attr.type_ "number"
                     , Attr.value (String.fromInt model.breakTime)
