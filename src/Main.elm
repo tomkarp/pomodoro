@@ -9,6 +9,9 @@ import Json.Decode as D
 import Time
 
 
+port playSound : () -> Cmd msg
+
+
 type Phase
     = WorkTime
     | BreakTime
@@ -164,18 +167,26 @@ view model =
                  , Attr.max (String.fromInt maxVal)
                  , Attr.pattern "[0-9]*"
                  , Attr.attribute "inputmode" "numeric"
-                 , onInput (\str ->
+                 , onInput
+                    (\str ->
                         let
-                            trimmed = String.trim str
+                            trimmed =
+                                String.trim str
                         in
                         if String.all Char.isDigit trimmed && not (String.isEmpty trimmed) then
                             case String.toInt trimmed of
-                                Just n -> onMsg n
-                                Nothing -> NoOp
+                                Just n ->
+                                    onMsg n
+
+                                Nothing ->
+                                    NoOp
+
                         else
                             NoOp
                     )
-                 ] ++ attrs)
+                 ]
+                    ++ attrs
+                )
                 []
     in
     div [ Attr.class "container" ]
@@ -281,10 +292,6 @@ subscriptions model =
                 (D.at [ "target", "tagName" ] D.string)
             )
         ]
-
-
--- User-Präferenz: Commit-Messages nie länger als 4 Wörter
-port playSound : () -> Cmd msg
 
 
 main : Program () Model Msg
