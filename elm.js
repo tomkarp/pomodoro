@@ -5255,6 +5255,11 @@ var $author$project$Main$PauseTimer = {$: 'PauseTimer'};
 var $author$project$Main$ResetTimer = {$: 'ResetTimer'};
 var $author$project$Main$StartTimer = {$: 'StartTimer'};
 var $author$project$Main$Tick = {$: 'Tick'};
+var $elm$json$Json$Decode$field = _Json_decodeField;
+var $elm$json$Json$Decode$at = F2(
+	function (fields, decoder) {
+		return A3($elm$core$List$foldr, $elm$json$Json$Decode$field, decoder, fields);
+	});
 var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $elm$time$Time$Every = F2(
 	function (a, b) {
@@ -5671,7 +5676,6 @@ var $elm$time$Time$every = F2(
 		return $elm$time$Time$subscription(
 			A2($elm$time$Time$Every, interval, tagger));
 	});
-var $elm$json$Json$Decode$field = _Json_decodeField;
 var $elm$json$Json$Decode$int = _Json_decodeInt;
 var $elm$browser$Browser$Events$Document = {$: 'Document'};
 var $elm$browser$Browser$Events$MySub = F3(
@@ -5875,6 +5879,7 @@ var $elm$browser$Browser$Events$on = F3(
 			A3($elm$browser$Browser$Events$MySub, node, name, decoder));
 	});
 var $elm$browser$Browser$Events$onKeyDown = A2($elm$browser$Browser$Events$on, $elm$browser$Browser$Events$Document, 'keydown');
+var $elm$json$Json$Decode$string = _Json_decodeString;
 var $author$project$Main$subscriptions = function (model) {
 	return $elm$core$Platform$Sub$batch(
 		_List_fromArray(
@@ -5886,19 +5891,34 @@ var $author$project$Main$subscriptions = function (model) {
 					return $author$project$Main$Tick;
 				}),
 				$elm$browser$Browser$Events$onKeyDown(
-				A2(
-					$elm$json$Json$Decode$map,
-					function (keyCode) {
-						switch (keyCode) {
-							case 32:
-								return model.isRunning ? $author$project$Main$PauseTimer : $author$project$Main$StartTimer;
-							case 82:
-								return $author$project$Main$ResetTimer;
-							default:
-								return $author$project$Main$NoOp;
-						}
-					},
-					A2($elm$json$Json$Decode$field, 'keyCode', $elm$json$Json$Decode$int)))
+				A3(
+					$elm$json$Json$Decode$map2,
+					F2(
+						function (keyCode, targetTag) {
+							var _v1 = _Utils_Tuple2(keyCode, targetTag);
+							_v1$2:
+							while (true) {
+								if (_v1.b === 'BODY') {
+									switch (_v1.a) {
+										case 32:
+											return model.isRunning ? $author$project$Main$PauseTimer : $author$project$Main$StartTimer;
+										case 82:
+											return $author$project$Main$ResetTimer;
+										default:
+											break _v1$2;
+									}
+								} else {
+									break _v1$2;
+								}
+							}
+							return $author$project$Main$NoOp;
+						}),
+					A2($elm$json$Json$Decode$field, 'keyCode', $elm$json$Json$Decode$int),
+					A2(
+						$elm$json$Json$Decode$at,
+						_List_fromArray(
+							['target', 'tagName']),
+						$elm$json$Json$Decode$string)))
 			]));
 };
 var $author$project$Main$BreakTime = {$: 'BreakTime'};
@@ -6112,11 +6132,6 @@ var $elm$html$Html$Events$stopPropagationOn = F2(
 			event,
 			$elm$virtual_dom$VirtualDom$MayStopPropagation(decoder));
 	});
-var $elm$json$Json$Decode$at = F2(
-	function (fields, decoder) {
-		return A3($elm$core$List$foldr, $elm$json$Json$Decode$field, decoder, fields);
-	});
-var $elm$json$Json$Decode$string = _Json_decodeString;
 var $elm$html$Html$Events$targetValue = A2(
 	$elm$json$Json$Decode$at,
 	_List_fromArray(

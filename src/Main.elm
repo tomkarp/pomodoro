@@ -252,25 +252,23 @@ subscriptions model =
     Sub.batch
         [ Time.every 1000 (\_ -> Tick)
         , Browser.Events.onKeyDown
-            (D.map
-                (\keyCode ->
-                    case keyCode of
-                        32 ->
-                            -- Leertaste
+            (D.map2
+                (\keyCode targetTag ->
+                    case (keyCode, targetTag) of
+                        (32, "BODY") ->
                             if model.isRunning then
                                 PauseTimer
-
                             else
                                 StartTimer
 
-                        82 ->
-                            -- R
+                        (82, "BODY") ->
                             ResetTimer
 
                         _ ->
                             NoOp
                 )
                 (D.field "keyCode" D.int)
+                (D.at [ "target", "tagName" ] D.string)
             )
         ]
 
