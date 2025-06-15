@@ -9,6 +9,19 @@
     <div id="elm"></div>
     <script src="elm.js"></script>
     <script>
+      // Safari-Audio-Workaround: AudioContext nach erstem User-Click unlocken
+      let unlocked = false;
+      document.body.addEventListener('click', function unlockAudio() {
+        if (!unlocked) {
+          let ctx = new (window.AudioContext || window.webkitAudioContext)();
+          let source = ctx.createBufferSource();
+          source.buffer = ctx.createBuffer(1, 1, 22050);
+          source.connect(ctx.destination);
+          source.start(0);
+          unlocked = true;
+        }
+      }, { once: true });
+
       var app = Elm.Main.init({
         node: document.getElementById('elm')
       });
