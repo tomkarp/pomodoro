@@ -6029,6 +6029,14 @@ var $author$project$Main$SetWorkTime = function (a) {
 	return {$: 'SetWorkTime', a: a};
 };
 var $author$project$Main$TogglePhase = {$: 'TogglePhase'};
+var $elm$virtual_dom$VirtualDom$attribute = F2(
+	function (key, value) {
+		return A2(
+			_VirtualDom_attribute,
+			_VirtualDom_noOnOrFormAction(key),
+			_VirtualDom_noJavaScriptOrHtmlUri(value));
+	});
+var $elm$html$Html$Attributes$attribute = $elm$virtual_dom$VirtualDom$attribute;
 var $elm$html$Html$button = _VirtualDom_node('button');
 var $elm$json$Json$Encode$string = _Json_wrap;
 var $elm$html$Html$Attributes$stringProperty = F2(
@@ -6039,11 +6047,6 @@ var $elm$html$Html$Attributes$stringProperty = F2(
 			$elm$json$Json$Encode$string(string));
 	});
 var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
-var $elm$core$Basics$composeR = F3(
-	function (f, g, x) {
-		return g(
-			f(x));
-	});
 var $elm$html$Html$div = _VirtualDom_node('div');
 var $elm$core$Basics$modBy = _Basics_modBy;
 var $elm$core$String$cons = _String_cons;
@@ -6090,16 +6093,6 @@ var $author$project$Main$formatTime = function (milliseconds) {
 var $elm$html$Html$h1 = _VirtualDom_node('h1');
 var $elm$html$Html$input = _VirtualDom_node('input');
 var $elm$html$Html$label = _VirtualDom_node('label');
-var $elm$core$Maybe$map = F2(
-	function (f, maybe) {
-		if (maybe.$ === 'Just') {
-			var value = maybe.a;
-			return $elm$core$Maybe$Just(
-				f(value));
-		} else {
-			return $elm$core$Maybe$Nothing;
-		}
-	});
 var $elm$html$Html$Attributes$max = $elm$html$Html$Attributes$stringProperty('max');
 var $elm$html$Html$Attributes$min = $elm$html$Html$Attributes$stringProperty('min');
 var $elm$virtual_dom$VirtualDom$Normal = function (a) {
@@ -6147,19 +6140,12 @@ var $elm$html$Html$Events$onInput = function (tagger) {
 			A2($elm$json$Json$Decode$map, tagger, $elm$html$Html$Events$targetValue)));
 };
 var $elm$html$Html$p = _VirtualDom_node('p');
+var $elm$html$Html$Attributes$pattern = $elm$html$Html$Attributes$stringProperty('pattern');
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
+var $elm$core$String$trim = _String_trim;
 var $elm$html$Html$Attributes$type_ = $elm$html$Html$Attributes$stringProperty('type');
 var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
-var $elm$core$Maybe$withDefault = F2(
-	function (_default, maybe) {
-		if (maybe.$ === 'Just') {
-			var value = maybe.a;
-			return value;
-		} else {
-			return _default;
-		}
-	});
 var $author$project$Main$view = function (model) {
 	return A2(
 		$elm$html$Html$div,
@@ -6203,19 +6189,32 @@ var $author$project$Main$view = function (model) {
 								$elm$html$Html$input,
 								_List_fromArray(
 									[
-										$elm$html$Html$Attributes$type_('number'),
+										$elm$html$Html$Attributes$type_('text'),
 										$elm$html$Html$Attributes$value(
 										$elm$core$String$fromInt(model.workTime)),
-										$elm$html$Html$Events$onInput(
-										A2(
-											$elm$core$Basics$composeR,
-											$elm$core$String$toInt,
-											A2(
-												$elm$core$Basics$composeR,
-												$elm$core$Maybe$map($author$project$Main$SetWorkTime),
-												$elm$core$Maybe$withDefault($author$project$Main$NoOp)))),
 										$elm$html$Html$Attributes$min('1'),
-										$elm$html$Html$Attributes$max('60')
+										$elm$html$Html$Attributes$max('60'),
+										$elm$html$Html$Attributes$pattern('[0-9]*'),
+										A2($elm$html$Html$Attributes$attribute, 'inputmode', 'numeric'),
+										$elm$html$Html$Events$onInput(
+										function (str) {
+											if (A2(
+												$elm$core$String$all,
+												$elm$core$Char$isDigit,
+												$elm$core$String$trim(str)) && (!$elm$core$String$isEmpty(
+												$elm$core$String$trim(str)))) {
+												var _v0 = $elm$core$String$toInt(
+													$elm$core$String$trim(str));
+												if (_v0.$ === 'Just') {
+													var n = _v0.a;
+													return $author$project$Main$SetWorkTime(n);
+												} else {
+													return $author$project$Main$NoOp;
+												}
+											} else {
+												return $author$project$Main$NoOp;
+											}
+										})
 									]),
 								_List_Nil)
 							])),
@@ -6238,19 +6237,32 @@ var $author$project$Main$view = function (model) {
 								$elm$html$Html$input,
 								_List_fromArray(
 									[
-										$elm$html$Html$Attributes$type_('number'),
+										$elm$html$Html$Attributes$type_('text'),
 										$elm$html$Html$Attributes$value(
 										$elm$core$String$fromInt(model.breakTime)),
-										$elm$html$Html$Events$onInput(
-										A2(
-											$elm$core$Basics$composeR,
-											$elm$core$String$toInt,
-											A2(
-												$elm$core$Basics$composeR,
-												$elm$core$Maybe$map($author$project$Main$SetBreakTime),
-												$elm$core$Maybe$withDefault($author$project$Main$NoOp)))),
 										$elm$html$Html$Attributes$min('1'),
-										$elm$html$Html$Attributes$max('30')
+										$elm$html$Html$Attributes$max('30'),
+										$elm$html$Html$Attributes$pattern('[0-9]*'),
+										A2($elm$html$Html$Attributes$attribute, 'inputmode', 'numeric'),
+										$elm$html$Html$Events$onInput(
+										function (str) {
+											if (A2(
+												$elm$core$String$all,
+												$elm$core$Char$isDigit,
+												$elm$core$String$trim(str)) && (!$elm$core$String$isEmpty(
+												$elm$core$String$trim(str)))) {
+												var _v1 = $elm$core$String$toInt(
+													$elm$core$String$trim(str));
+												if (_v1.$ === 'Just') {
+													var n = _v1.a;
+													return $author$project$Main$SetBreakTime(n);
+												} else {
+													return $author$project$Main$NoOp;
+												}
+											} else {
+												return $author$project$Main$NoOp;
+											}
+										})
 									]),
 								_List_Nil)
 							]))
@@ -6288,8 +6300,8 @@ var $author$project$Main$view = function (model) {
 									[
 										$elm$html$Html$Attributes$class(
 										'timer-icon ' + function () {
-											var _v0 = model.phase;
-											if (_v0.$ === 'WorkTime') {
+											var _v2 = model.phase;
+											if (_v2.$ === 'WorkTime') {
 												return 'work';
 											} else {
 												return 'break';
