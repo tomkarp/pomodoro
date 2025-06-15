@@ -6147,6 +6147,41 @@ var $elm$core$String$trim = _String_trim;
 var $elm$html$Html$Attributes$type_ = $elm$html$Html$Attributes$stringProperty('type');
 var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
 var $author$project$Main$view = function (model) {
+	var digitInput = F5(
+		function (attrs, val, onMsg, minVal, maxVal) {
+			return A2(
+				$elm$html$Html$input,
+				_Utils_ap(
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$type_('text'),
+							$elm$html$Html$Attributes$value(
+							$elm$core$String$fromInt(val)),
+							$elm$html$Html$Attributes$min(
+							$elm$core$String$fromInt(minVal)),
+							$elm$html$Html$Attributes$max(
+							$elm$core$String$fromInt(maxVal)),
+							$elm$html$Html$Attributes$pattern('[0-9]*'),
+							A2($elm$html$Html$Attributes$attribute, 'inputmode', 'numeric'),
+							$elm$html$Html$Events$onInput(
+							function (str) {
+								var trimmed = $elm$core$String$trim(str);
+								if (A2($elm$core$String$all, $elm$core$Char$isDigit, trimmed) && (!$elm$core$String$isEmpty(trimmed))) {
+									var _v1 = $elm$core$String$toInt(trimmed);
+									if (_v1.$ === 'Just') {
+										var n = _v1.a;
+										return onMsg(n);
+									} else {
+										return $author$project$Main$NoOp;
+									}
+								} else {
+									return $author$project$Main$NoOp;
+								}
+							})
+						]),
+					attrs),
+				_List_Nil);
+		});
 	return A2(
 		$elm$html$Html$div,
 		_List_fromArray(
@@ -6185,38 +6220,7 @@ var $author$project$Main$view = function (model) {
 									[
 										$elm$html$Html$text('Arbeitszeit (Minuten):')
 									])),
-								A2(
-								$elm$html$Html$input,
-								_List_fromArray(
-									[
-										$elm$html$Html$Attributes$type_('text'),
-										$elm$html$Html$Attributes$value(
-										$elm$core$String$fromInt(model.workTime)),
-										$elm$html$Html$Attributes$min('1'),
-										$elm$html$Html$Attributes$max('60'),
-										$elm$html$Html$Attributes$pattern('[0-9]*'),
-										A2($elm$html$Html$Attributes$attribute, 'inputmode', 'numeric'),
-										$elm$html$Html$Events$onInput(
-										function (str) {
-											if (A2(
-												$elm$core$String$all,
-												$elm$core$Char$isDigit,
-												$elm$core$String$trim(str)) && (!$elm$core$String$isEmpty(
-												$elm$core$String$trim(str)))) {
-												var _v0 = $elm$core$String$toInt(
-													$elm$core$String$trim(str));
-												if (_v0.$ === 'Just') {
-													var n = _v0.a;
-													return $author$project$Main$SetWorkTime(n);
-												} else {
-													return $author$project$Main$NoOp;
-												}
-											} else {
-												return $author$project$Main$NoOp;
-											}
-										})
-									]),
-								_List_Nil)
+								A5(digitInput, _List_Nil, model.workTime, $author$project$Main$SetWorkTime, 1, 60)
 							])),
 						A2(
 						$elm$html$Html$div,
@@ -6233,38 +6237,7 @@ var $author$project$Main$view = function (model) {
 									[
 										$elm$html$Html$text('Pausenzeit (Minuten):')
 									])),
-								A2(
-								$elm$html$Html$input,
-								_List_fromArray(
-									[
-										$elm$html$Html$Attributes$type_('text'),
-										$elm$html$Html$Attributes$value(
-										$elm$core$String$fromInt(model.breakTime)),
-										$elm$html$Html$Attributes$min('1'),
-										$elm$html$Html$Attributes$max('30'),
-										$elm$html$Html$Attributes$pattern('[0-9]*'),
-										A2($elm$html$Html$Attributes$attribute, 'inputmode', 'numeric'),
-										$elm$html$Html$Events$onInput(
-										function (str) {
-											if (A2(
-												$elm$core$String$all,
-												$elm$core$Char$isDigit,
-												$elm$core$String$trim(str)) && (!$elm$core$String$isEmpty(
-												$elm$core$String$trim(str)))) {
-												var _v1 = $elm$core$String$toInt(
-													$elm$core$String$trim(str));
-												if (_v1.$ === 'Just') {
-													var n = _v1.a;
-													return $author$project$Main$SetBreakTime(n);
-												} else {
-													return $author$project$Main$NoOp;
-												}
-											} else {
-												return $author$project$Main$NoOp;
-											}
-										})
-									]),
-								_List_Nil)
+								A5(digitInput, _List_Nil, model.breakTime, $author$project$Main$SetBreakTime, 1, 30)
 							]))
 					])),
 				A2(
@@ -6300,8 +6273,8 @@ var $author$project$Main$view = function (model) {
 									[
 										$elm$html$Html$Attributes$class(
 										'timer-icon ' + function () {
-											var _v2 = model.phase;
-											if (_v2.$ === 'WorkTime') {
+											var _v0 = model.phase;
+											if (_v0.$ === 'WorkTime') {
 												return 'work';
 											} else {
 												return 'break';

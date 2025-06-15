@@ -155,58 +155,39 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
+    let
+        digitInput attrs val onMsg minVal maxVal =
+            input
+                ([ Attr.type_ "text"
+                 , Attr.value (String.fromInt val)
+                 , Attr.min (String.fromInt minVal)
+                 , Attr.max (String.fromInt maxVal)
+                 , Attr.pattern "[0-9]*"
+                 , Attr.attribute "inputmode" "numeric"
+                 , onInput (\str ->
+                        let
+                            trimmed = String.trim str
+                        in
+                        if String.all Char.isDigit trimmed && not (String.isEmpty trimmed) then
+                            case String.toInt trimmed of
+                                Just n -> onMsg n
+                                Nothing -> NoOp
+                        else
+                            NoOp
+                    )
+                 ] ++ attrs)
+                []
+    in
     div [ Attr.class "container" ]
         [ h1 [] [ text "Pomodoro Timer" ]
         , div [ Attr.class "settings" ]
             [ div [ Attr.class "setting-group" ]
                 [ label [] [ text "Arbeitszeit (Minuten):" ]
-                , input
-                    [ Attr.type_ "text"
-                    , Attr.value (String.fromInt model.workTime)
-                    , Attr.min "1"
-                    , Attr.max "60"
-                    , Attr.pattern "[0-9]*"
-                    , Attr.attribute "inputmode" "numeric"
-                    , onInput
-                        (\str ->
-                            if String.all Char.isDigit (String.trim str) && not (String.isEmpty (String.trim str)) then
-                                case String.toInt (String.trim str) of
-                                    Just n ->
-                                        SetWorkTime n
-
-                                    Nothing ->
-                                        NoOp
-
-                            else
-                                NoOp
-                        )
-                    ]
-                    []
+                , digitInput [] model.workTime SetWorkTime 1 60
                 ]
             , div [ Attr.class "setting-group" ]
                 [ label [] [ text "Pausenzeit (Minuten):" ]
-                , input
-                    [ Attr.type_ "text"
-                    , Attr.value (String.fromInt model.breakTime)
-                    , Attr.min "1"
-                    , Attr.max "30"
-                    , Attr.pattern "[0-9]*"
-                    , Attr.attribute "inputmode" "numeric"
-                    , onInput
-                        (\str ->
-                            if String.all Char.isDigit (String.trim str) && not (String.isEmpty (String.trim str)) then
-                                case String.toInt (String.trim str) of
-                                    Just n ->
-                                        SetBreakTime n
-
-                                    Nothing ->
-                                        NoOp
-
-                            else
-                                NoOp
-                        )
-                    ]
-                    []
+                , digitInput [] model.breakTime SetBreakTime 1 30
                 ]
             ]
         , div [ Attr.class "timer-display" ]
@@ -302,6 +283,7 @@ subscriptions model =
         ]
 
 
+-- User-Präferenz: Commit-Messages nie länger als 4 Wörter
 port playSound : () -> Cmd msg
 
 
