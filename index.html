@@ -9,16 +9,22 @@
     <div id="elm"></div>
     <script src="elm.js"></script>
     <script>
-      // Safari-Audio-Workaround: AudioContext nach erstem User-Click unlocken
+      // Safari-Audio-Workaround: Einmaliges Audio-Element für alle Sounds
       let unlocked = false;
+      let audioElem = document.createElement('audio');
+      audioElem.src = 'https://assets.mixkit.co/active_storage/sfx/270/270-preview.mp3';
+      audioElem.volume = 0.8;
+      document.body.appendChild(audioElem);
+
       document.body.addEventListener('click', function unlockAudio() {
         if (!unlocked) {
-          let ctx = new (window.AudioContext || window.webkitAudioContext)();
-          let source = ctx.createBufferSource();
-          source.buffer = ctx.createBuffer(1, 1, 22050);
-          source.connect(ctx.destination);
-          source.start(0);
-          unlocked = true;
+          audioElem.muted = true;
+          audioElem.play().finally(() => {
+            audioElem.pause();
+            audioElem.currentTime = 0;
+            audioElem.muted = false;
+            unlocked = true;
+          });
         }
       }, { once: true });
 
@@ -27,9 +33,10 @@
       });
 
       app.ports.playSound.subscribe(function() {
-        const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/270/270-preview.mp3');
-        audio.volume = 0.8;
-        audio.play().catch(error => console.error('Fehler beim Abspielen des Sounds:', error));
+        if (unlocked) {
+          audioElem.currentTime = 0;
+          audioElem.play().catch(() => {});
+        }
       });
     </script>
   </body>
