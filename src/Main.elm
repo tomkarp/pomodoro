@@ -161,22 +161,50 @@ view model =
             [ div [ Attr.class "setting-group" ]
                 [ label [] [ text "Arbeitszeit (Minuten):" ]
                 , input
-                    [ Attr.type_ "number"
+                    [ Attr.type_ "text"
                     , Attr.value (String.fromInt model.workTime)
-                    , onInput (String.toInt >> Maybe.map SetWorkTime >> Maybe.withDefault NoOp)
                     , Attr.min "1"
                     , Attr.max "60"
+                    , Attr.pattern "[0-9]*"
+                    , Attr.attribute "inputmode" "numeric"
+                    , onInput
+                        (\str ->
+                            if String.all Char.isDigit (String.trim str) && not (String.isEmpty (String.trim str)) then
+                                case String.toInt (String.trim str) of
+                                    Just n ->
+                                        SetWorkTime n
+
+                                    Nothing ->
+                                        NoOp
+
+                            else
+                                NoOp
+                        )
                     ]
                     []
                 ]
             , div [ Attr.class "setting-group" ]
                 [ label [] [ text "Pausenzeit (Minuten):" ]
                 , input
-                    [ Attr.type_ "number"
+                    [ Attr.type_ "text"
                     , Attr.value (String.fromInt model.breakTime)
-                    , onInput (String.toInt >> Maybe.map SetBreakTime >> Maybe.withDefault NoOp)
                     , Attr.min "1"
                     , Attr.max "30"
+                    , Attr.pattern "[0-9]*"
+                    , Attr.attribute "inputmode" "numeric"
+                    , onInput
+                        (\str ->
+                            if String.all Char.isDigit (String.trim str) && not (String.isEmpty (String.trim str)) then
+                                case String.toInt (String.trim str) of
+                                    Just n ->
+                                        SetBreakTime n
+
+                                    Nothing ->
+                                        NoOp
+
+                            else
+                                NoOp
+                        )
                     ]
                     []
                 ]
@@ -254,14 +282,15 @@ subscriptions model =
         , Browser.Events.onKeyDown
             (D.map2
                 (\keyCode targetTag ->
-                    case (keyCode, targetTag) of
-                        (32, "BODY") ->
+                    case ( keyCode, targetTag ) of
+                        ( 32, "BODY" ) ->
                             if model.isRunning then
                                 PauseTimer
+
                             else
                                 StartTimer
 
-                        (82, "BODY") ->
+                        ( 82, "BODY" ) ->
                             ResetTimer
 
                         _ ->
